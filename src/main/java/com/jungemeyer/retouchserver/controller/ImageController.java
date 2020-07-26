@@ -6,6 +6,7 @@ import com.jungemeyer.retouchserver.repository.ImageRepository;
 import com.jungemeyer.retouchserver.repository.MatchRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,7 +72,7 @@ public class ImageController {
         }
 
         InputStream in = getClass()
-                .getResourceAsStream("../../../../faces/" + path + id + ".png");
+                .getResourceAsStream("../../../../faces/" + path + id + ".jpg");
         return IOUtils.toByteArray(in);
     }
 
@@ -109,9 +110,16 @@ public class ImageController {
 
     }
 
+    @Autowired
+    private Environment env;
+
     @RequestMapping(value = "/fill")
     public void fill() {
-        File f = new File("/Users/leon/Files/retouch-server/src/main/resources/faces/female");
+
+        String path = env.getProperty("face-location.path");
+        System.out.println(path);
+
+        File f = new File(path + "faces/female");
         var pathnames = f.list();
 
         for (String pathname : pathnames) {
@@ -122,7 +130,7 @@ public class ImageController {
         }
 
 
-        f = new File("/Users/leon/Files/retouch-server/src/main/resources/faces/male");
+        f = new File(path + "faces/male");
         pathnames = f.list();
 
         for (String pathname : pathnames) {

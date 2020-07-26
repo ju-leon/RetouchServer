@@ -10,9 +10,26 @@ import java.util.Optional;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, String> {
     Optional<Image> findById(String id);
+
     List<Image> findAll();
+
+    List<Image> findAllByGender(String gender);
+
     Image findFirstByOrderByLastUpdatedAsc();
+
     Image findFirstByOrderByEloDesc();
+
     Image findFirstByOrderByEloAsc();
+
+    Image findFirstByGenderOrderByEloAsc(String gender);
+
     Image findFirstByOrderByRandom();
+
+    Image findFirstByGenderOrderByRandom(String gender);
+
+    List<Image> findAllByOrderByEloAsc();
+
+    List<Image> findAllByGenderOrderByEloAsc(String gender);
+
+    Image findFirstByGenderOrderByLastUpdatedAsc(String gender);
 }

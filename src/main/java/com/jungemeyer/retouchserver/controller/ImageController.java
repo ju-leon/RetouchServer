@@ -6,6 +6,7 @@ import com.jungemeyer.retouchserver.repository.ImageRepository;
 import com.jungemeyer.retouchserver.repository.MatchRepository;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,12 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
@@ -66,33 +64,44 @@ public class ImageController {
     )
     public @ResponseBody
     byte[] getImageWithMediaType(@RequestParam String id) throws IOException {
+
+        String path = "female/";
+
+        if (imageRepository.findById(id).get().getGender().equals("m")) {
+            path = "male/";
+        }
+
         InputStream in = getClass()
-                .getResourceAsStream("../../../../faces/female/" + id + ".jpg");
+                .getResourceAsStream("../../../../faces/" + path + id + ".jpg");
         return IOUtils.toByteArray(in);
     }
 
 
     @CrossOrigin
     @RequestMapping(value = "/random_pair", method = RequestMethod.GET)
-    public Image[] random_pair() {
+    public Image[] random_pair(@RequestParam String gender) {
         Image image1;
         Image image2;
-        if (false) {
-            image1 = imageRepository.findFirstByOrderByLastUpdatedAsc();
-            image2 = imageRepository.findFirstByOrderByRandom();
-        } else {
-            List<Image> all = imageRepository.findAll();
+        if (alternate) {
+            List<Image> all = imageRepository.findAllByGenderOrderByEloAsc(gender);
 
             int rand = getRandomNumberInRange(0, all.size() - 1);
 
             image1 = all.get(rand);
             image2 = all.get(rand + 1);
+        } else {
+            List<Image> all = imageRepository.findAllByGender(gender);
+
+            int rand = getRandomNumberInRange(0, all.size() - 1);
+
+            image1 = imageRepository.findFirstByGenderOrderByLastUpdatedAsc(gender);
+            image2 = imageRepository.findFirstByGenderOrderByRandom(gender);
         }
 
         alternate = !alternate;
 
         if (image1.getId().equals(image2.getId())) {
-            image2 = imageRepository.findFirstByOrderByEloAsc();
+            image2 = imageRepository.findFirstByGenderOrderByEloAsc(gender);
         }
 
         Image[] array = {image1, image2};
@@ -101,16 +110,33 @@ public class ImageController {
 
     }
 
+    @Autowired
+    private Environment env;
+
     @RequestMapping(value = "/fill")
     public void fill() {
-        File f = new File("/home/ubuntu/RetouchServer/src/main/resources/faces/female");
 
+        String path = env.getProperty("face-location.path");
+        System.out.println(path);
+
+        File f = new File(path + "faces/female");
         var pathnames = f.list();
 
         for (String pathname : pathnames) {
             String file = pathname.substring(0, pathname.length() - 4);
 
-            Image image = new Image(file, getRandomNumberInRange(0, 5000));
+            Image image = new Image(file, "f", getRandomNumberInRange(0, 5000));
+            imageRepository.save(image);
+        }
+
+
+        f = new File(path + "faces/male");
+        pathnames = f.list();
+
+        for (String pathname : pathnames) {
+            String file = pathname.substring(0, pathname.length() - 4);
+
+            Image image = new Image(file, "m", getRandomNumberInRange(0, 5000));
             imageRepository.save(image);
         }
     }

@@ -72,7 +72,7 @@ public class ImageController {
         }
 
         InputStream in = getClass()
-                .getResourceAsStream("../../../../faces/" + path + id + ".jpg");
+                .getResourceAsStream("../../../../faces/" + path + id + ".png");
         return IOUtils.toByteArray(in);
     }
 

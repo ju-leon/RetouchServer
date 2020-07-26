@@ -74,7 +74,7 @@ public class ImageController {
         }
 
         InputStream in = getClass()
-                .getResourceAsStream("../../../../faces/" + path + id + ".jpg");
+                .getResourceAsStream("../../../../faces/" + path + id + ".png");
         return IOUtils.toByteArray(in);
     }
 
@@ -143,6 +143,7 @@ public class ImageController {
         }
     }
 
+    @CrossOrigin
     @RequestMapping(value = "/leaderboard")
     public Map<String, List<String>> leaderboard() {
         List<Image> men = imageRepository.findAllByGenderOrderByEloDesc("m");

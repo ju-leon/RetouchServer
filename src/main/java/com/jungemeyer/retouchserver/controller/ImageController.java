@@ -77,7 +77,7 @@ public class ImageController {
     public Image[] random_pair() {
         Image image1;
         Image image2;
-        if (alternate) {
+        if (false) {
             image1 = imageRepository.findFirstByOrderByLastUpdatedAsc();
             image2 = imageRepository.findFirstByOrderByRandom();
         } else {
@@ -103,7 +103,7 @@ public class ImageController {
 
     @RequestMapping(value = "/fill")
     public void fill() {
-        File f = new File("/Users/leon/Files/retouch-server/src/main/resources/faces/female");
+        File f = new File("/home/ubuntu/RetouchServer/src/main/resources/faces/female");
 
         var pathnames = f.list();
 

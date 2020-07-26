@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -139,6 +141,32 @@ public class ImageController {
             Image image = new Image(file, "m", getRandomNumberInRange(0, 5000));
             imageRepository.save(image);
         }
+    }
+
+    @CrossOrigin
+    @RequestMapping(value = "/leaderboard")
+    public Map<String, List<String>> leaderboard() {
+        List<Image> men = imageRepository.findAllByGenderOrderByEloDesc("m");
+        List<String> idMen = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            idMen.add(men.get(i).getId());
+        }
+
+        List<Image> women = imageRepository.findAllByGenderOrderByEloDesc("f");
+        List<String> idWomen = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            idWomen.add(women.get(i).getId());
+        }
+
+        Map<String, List<String>> map = new HashMap<>();
+
+        map.put("men", idMen);
+        map.put("women", idWomen);
+
+        return map;
+
     }
 
 

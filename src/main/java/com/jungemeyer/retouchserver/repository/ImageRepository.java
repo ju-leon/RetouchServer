@@ -15,6 +15,8 @@ public interface ImageRepository extends JpaRepository<Image, String> {
 
     List<Image> findAllByGender(String gender);
 
+    List<Image> findAllByGenderOrderByEloDesc(String gender);
+
     Image findFirstByOrderByLastUpdatedAsc();
 
     Image findFirstByOrderByEloDesc();

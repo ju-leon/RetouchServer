@@ -41,3 +41,5 @@ mvnw
 mvnw.cmd
 
 src/main/resources/faces/female/
+
+src/main/resources/application.properties

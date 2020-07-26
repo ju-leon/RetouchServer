@@ -25,6 +25,8 @@ public class Image {
     @Id
     private String id;
 
+    private String gender;
+
     @OneToMany(mappedBy = "winner")
     private Set<Match> win;
 
@@ -44,10 +46,11 @@ public class Image {
         this.elo = 1000.0;
     }
 
-    public Image(String id, long random) {
+    public Image(String id, String gender, long random) {
         this.id = id;
         this.elo = 1000.0;
         this.random = random;
+        this.gender = gender;
     }
 
     public String getId() {
@@ -56,6 +59,10 @@ public class Image {
 
     public double getElo() {
         return elo;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public void winAgainst(Image looser) {

@@ -156,7 +156,7 @@ public class ImageController {
         List<Image> women = imageRepository.findAllByGenderOrderByEloDesc("f");
         List<String> idWomen = new ArrayList<>();
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 100; i++) {
             idWomen.add(women.get(i).getId());
         }
 

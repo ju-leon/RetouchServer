@@ -17,6 +17,8 @@ public interface ImageRepository extends JpaRepository<Image, String> {
 
     List<Image> findAllByGenderOrderByEloDesc(String gender);
 
+    List<Image> findAllByGenderOrderByEloAsc(String gender);
+
     Image findFirstByOrderByLastUpdatedAsc();
 
     Image findFirstByOrderByEloDesc();
@@ -30,8 +32,6 @@ public interface ImageRepository extends JpaRepository<Image, String> {
     Image findFirstByGenderOrderByRandom(String gender);
 
     List<Image> findAllByOrderByEloAsc();
-
-    List<Image> findAllByGenderOrderByEloAsc(String gender);
 
     Image findFirstByGenderOrderByLastUpdatedAsc(String gender);
 }

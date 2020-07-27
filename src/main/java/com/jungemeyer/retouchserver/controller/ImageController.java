@@ -153,6 +153,13 @@ public class ImageController {
             idMen.add(men.get(i).getId());
         }
 
+        List<Image> menL = imageRepository.findAllByGenderOrderByEloAsc("m");
+        List<String> idMenL = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            idMenL.add(menL.get(i).getId());
+        }
+
         List<Image> women = imageRepository.findAllByGenderOrderByEloDesc("f");
         List<String> idWomen = new ArrayList<>();
 
@@ -160,10 +167,19 @@ public class ImageController {
             idWomen.add(women.get(i).getId());
         }
 
+        List<Image> womenL = imageRepository.findAllByGenderOrderByEloAsc("f");
+        List<String> idWomenL = new ArrayList<>();
+
+        for (int i = 0; i < 100; i++) {
+            idWomenL.add(womenL.get(i).getId());
+        }
+
         Map<String, List<String>> map = new HashMap<>();
 
         map.put("men", idMen);
+        map.put("men_end", idMenL);
         map.put("women", idWomen);
+        map.put("women_end", idWomenL);
 
         return map;
 

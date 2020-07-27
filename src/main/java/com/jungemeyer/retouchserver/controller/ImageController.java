@@ -163,14 +163,14 @@ public class ImageController {
         List<Image> women = imageRepository.findAllByGenderOrderByEloDesc("f");
         List<String> idWomen = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             idWomen.add(women.get(i).getId());
         }
 
         List<Image> womenL = imageRepository.findAllByGenderOrderByEloAsc("f");
         List<String> idWomenL = new ArrayList<>();
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 20; i++) {
             idWomenL.add(womenL.get(i).getId());
         }
 
